@@ -11,6 +11,13 @@ enum class TileValue(val symbol: String) { TIC("X"), TAC("O"), EMPTY(" ") }
  */
 sealed class Tile(private val value: TileValue) {
     override fun toString(): String = value.symbol
+    override fun equals(other: Any?): Boolean {
+        return when(other) {
+            is Tile -> other.value == value
+            else -> false
+        }
+    }
+    // TODO: override hashCode
 }
 
 /**

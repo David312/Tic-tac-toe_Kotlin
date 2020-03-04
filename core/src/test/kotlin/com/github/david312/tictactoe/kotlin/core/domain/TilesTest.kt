@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class TilesTest {
 
-    lateinit var tile: Tile
+    private lateinit var tile: Tile
 
     @Test
     fun `An Empty tile should be represented as " "`() {
@@ -23,5 +23,12 @@ class TilesTest {
     fun `A Tac tile should be representeed as "O"`() {
         tile = TacTile()
         assertEquals("O", tile.toString())
+    }
+
+    @Test
+    fun `Two tiles are equal if they have the same value`() {
+        tile = TicTile()
+        val other = TicTile()
+        assertEquals(tile, other)
     }
 }
