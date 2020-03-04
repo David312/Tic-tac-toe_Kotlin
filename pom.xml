@@ -6,7 +6,10 @@
     <groupId>com.github.david312</groupId>
     <artifactId>tic-tac-toe_kotlin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>core</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>com.github.david312 tic-tac-toe_kotlin</name>
 
