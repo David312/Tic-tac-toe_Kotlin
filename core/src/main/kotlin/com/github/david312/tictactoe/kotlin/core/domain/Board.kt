@@ -9,11 +9,19 @@ val COLUMNS = 3
  * an API to manipulate its state.
  */
 class Board {
-    private var rows: List<MutableList<Tile>> = listOf(
-        mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile()),
-        mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile()),
-        mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile())
-    )
+    private var rows: List<MutableList<Tile>> = buildEmptyGrid()
+
+    private fun buildEmptyGrid(): List<MutableList<Tile>> {
+        val grid: ArrayList<MutableList<Tile>> = arrayListOf()
+        for (r in 0 until ROWS) {
+            val row: ArrayList<Tile> = arrayListOf()
+            for (c in 0 until COLUMNS) {
+                row.add(EmptyTile())
+            }
+            grid.add(row.toMutableList())
+        }
+        return grid.toList()
+    }
 
     /**
      * Gets the tile located at the given (row, column) location.
@@ -45,16 +53,12 @@ class Board {
      * Cleans the board by marking all tiles with empty tiles.
      */
     fun clear(): Unit {
-        rows = listOf(
-            mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile()),
-            mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile()),
-            mutableListOf<Tile>(EmptyTile(), EmptyTile(), EmptyTile())
-        )
+        rows = buildEmptyGrid()
     }
 
     override fun toString(): String {
         return rows.map {
                 row -> row.map { "[$it]" }.reduce { acc, s -> acc + s }
-        }.reduce { acc, s -> acc + s + "\n" }
+        }.reduce { acc, s -> acc + "\n" + s }
     }
 }

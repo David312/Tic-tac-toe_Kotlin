@@ -37,4 +37,15 @@ class BoardTest {
         board.clear()
         checkBoardIsEmpty(board)
     }
+
+    @Test
+    fun `A Board should be printed as a 3x3 grid`() {
+        val expected: String =
+            """
+            [ ][ ][ ]
+            [ ][ ][ ]
+            [ ][ ][ ]
+            """.trimIndent()
+        assertEquals(expected, board.toString())
+    }
 }
