@@ -9,7 +9,7 @@ enum class TileValue(val symbol: String) { TIC("X"), TAC("O"), EMPTY(" ") }
 /**
  * Class representing a single tile.
  */
-sealed class Tile(private val value: TileValue) {
+sealed class Tile(val value: TileValue) {
     override fun toString(): String = value.symbol
     override fun equals(other: Any?): Boolean {
         return when(other) {
