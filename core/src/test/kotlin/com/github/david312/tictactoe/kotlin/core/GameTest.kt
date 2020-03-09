@@ -1,14 +1,13 @@
 package com.github.david312.tictactoe.kotlin.core
 
-import com.github.david312.tictactoe.kotlin.core.domain.Board
 import com.github.david312.tictactoe.kotlin.core.domain.PlayerTurn
 import com.github.david312.tictactoe.kotlin.core.domain.ROWS
+import com.github.david312.tictactoe.kotlin.core.exceptions.GameAlreadyFinishedException
 import com.github.david312.tictactoe.kotlin.core.exceptions.IllegalPlayerMoveException
 import com.github.david312.tictactoe.kotlin.core.exceptions.InvalidBoardLocationException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.lang.Exception
 import kotlin.test.assertEquals
 
 class GameTest {
@@ -54,5 +53,55 @@ class GameTest {
         game.mark(0, 0)
         assertThrows<IllegalPlayerMoveException> { game.mark(0, 0) }
         assertEquals(PlayerTurn.PLAYER_2, game.currentPlayer)
+    }
+
+    @Test
+    fun `When a player wins then no more move should be allowed`() {
+        makewinningGame()
+        assertThrows<GameAlreadyFinishedException> { game.mark(1, 2) }
+    }
+
+    private fun makewinningGame() {
+        // [X][X][X]
+        // [O][O][ ]
+        // [ ][ ][ ]
+        game.mark(0, 0) // P1
+        game.mark(1, 0) // P2
+        game.mark(0, 1) // P1
+        game.mark(1, 1) // P2
+        game.mark(0, 2) // P1 Wins
+    }
+
+    @Test
+    fun `When nobody wins then no more moves should be allowed`() {
+        makeDrawGame()
+        assertThrows<GameAlreadyFinishedException> { game.mark(1, 1) }
+    }
+
+    private fun makeDrawGame() {
+        // [X][O][X]
+        // [X][O][O]
+        // [O][X][X]
+        game.mark(0, 0) // P1
+        game.mark(0, 1) // P2
+        game.mark(0, 2) // P1
+        game.mark(1, 1) // P2
+        game.mark(1, 0) // P1
+        game.mark(1, 2) // P2
+        game.mark(2, 1) // P1
+        game.mark(2, 0) // P2
+        game.mark(2, 2) // P1
+    }
+
+    @Test
+    fun `When a player wins then the next turn should not be updated`() {
+        makewinningGame()
+        assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
+    }
+
+    @Test
+    fun `When nobody wins then the next turn should not be updated`() {
+        makeDrawGame()
+        assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
     }
 }

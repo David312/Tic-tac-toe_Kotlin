@@ -7,3 +7,6 @@ class InvalidBoardLocationException(row: Int, column: Int) :
 
 class IllegalPlayerMoveException(row: Int, column: Int, tileValue: TileValue) :
     RuntimeException("Illegal move detected at tile [$row, $column]. Tile already has a not empty value: $tileValue")
+
+class GameAlreadyFinishedException() :
+    RuntimeException("The game has already finished. No more moves are allowed!")
