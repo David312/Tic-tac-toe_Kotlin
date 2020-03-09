@@ -3,6 +3,7 @@ package com.github.david312.tictactoe.kotlin.core.domain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class BoardTest {
     private lateinit var board: Board
@@ -47,5 +48,16 @@ class BoardTest {
             [ ][ ][ ]
             """.trimIndent()
         assertEquals(expected, board.toString())
+    }
+
+    @Test
+    fun `A board is equals to another board if all tiles match`() {
+        val other = Board()
+        assertEquals(board, other)
+        assertEquals(board, board)
+        assertNotEquals(board, null as Board?)
+
+        other.mark(1, 1, TileValue.TIC)
+        assertNotEquals(board, other)
     }
 }

@@ -61,4 +61,20 @@ class Board {
                 row -> row.map { "[$it]" }.reduce { acc, s -> acc + s }
         }.reduce { acc, s -> acc + "\n" + s }
     }
+
+    override fun equals(other: Any?): Boolean {
+        when(other) {
+            is Board -> {
+                for (i in 0 until ROWS) {
+                    for (j in 0 until COLUMNS) {
+                        if (rows[i][j] != other.rows[i][j]) {
+                            return false
+                        }
+                    }
+                }
+                return true
+            }
+            else -> return false
+        }
+    }
 }
