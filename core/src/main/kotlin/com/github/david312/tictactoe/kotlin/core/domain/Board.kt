@@ -56,6 +56,34 @@ class Board {
         rows = buildEmptyGrid()
     }
 
+    /**
+     * Checks if the current board is empty, that is, all its tiles are empty tiles.
+     */
+    fun isEmpty(): Boolean {
+        for (i in 0 until ROWS) {
+            for (j in 0 until COLUMNS) {
+                if (rows[i][j] != EmptyTile()) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    /**
+     * Checks if the current board is full, that is, neither of its tiles is empty.
+     */
+    fun isFull(): Boolean {
+        for (i in 0 until ROWS) {
+            for (j in 0 until COLUMNS) {
+                if (rows[i][j] == EmptyTile()) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     override fun toString(): String {
         return rows.map {
                 row -> row.map { "[$it]" }.reduce { acc, s -> acc + s }

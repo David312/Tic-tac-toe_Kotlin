@@ -3,7 +3,9 @@ package com.github.david312.tictactoe.kotlin.core.domain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 class BoardTest {
     private lateinit var board: Board
@@ -37,6 +39,31 @@ class BoardTest {
         board.mark(1, 1, TileValue.TIC)
         board.clear()
         checkBoardIsEmpty(board)
+    }
+
+    @Test
+    fun `A board is empty when all its tiles have empty values`() {
+        board.clear()
+        assertTrue(board.isEmpty())
+
+        board.mark(1, 1, TileValue.TIC)
+        assertFalse(board.isEmpty())
+    }
+
+    @Test
+    fun `A board is full when all its tiles have no empty value`() {
+        board.clear()
+        assertFalse(board.isFull())
+
+        board.mark(1, 1, TileValue.TIC)
+        assertFalse(board.isFull())
+
+        for (i in 0 until ROWS) {
+            for (j in 0 until COLUMNS) {
+                board.mark(i, j, TileValue.TIC)
+            }
+        }
+        assertTrue(board.isFull())
     }
 
     @Test
