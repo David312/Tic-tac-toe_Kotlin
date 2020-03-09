@@ -84,18 +84,18 @@ class Game(
         return board.isFull()
     }
 
+    private fun nextTurn() {
+        playerTurn = when(playerTurn) {
+            PlayerTurn.PLAYER_1 -> PlayerTurn.PLAYER_2
+            PlayerTurn.PLAYER_2 -> PlayerTurn.PLAYER_1
+        }
+    }
+
     private fun updateScores() {
         if (winnerPlayer != null) {
             val player: PlayerTurn = winnerPlayer!!
             // player should always exist in the map.
             scores[player] = scores[player]!! + 1
-        }
-    }
-
-    private fun nextTurn() {
-        playerTurn = when(playerTurn) {
-            PlayerTurn.PLAYER_1 -> PlayerTurn.PLAYER_2
-            PlayerTurn.PLAYER_2 -> PlayerTurn.PLAYER_1
         }
     }
 
@@ -106,7 +106,7 @@ class Game(
     fun newGame() {
         // update next turn.
         nextTurn()
-        board = Board()
+        board.clear()
         gameFinished = false
         winnerPlayer = null
     }
