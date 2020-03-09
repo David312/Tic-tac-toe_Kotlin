@@ -9,7 +9,7 @@ import com.github.david312.tictactoe.kotlin.core.logic.BoardRules
 import com.github.david312.tictactoe.kotlin.core.logic.WinningConditions
 
 class Game(
-    private val board: Board = Board(),
+    private var board: Board = Board(),
     private var playerTurn: PlayerTurn = PlayerTurn.PLAYER_1,
     private val scores: MutableMap<PlayerTurn, Int> = mutableMapOf(
         PlayerTurn.PLAYER_1 to 0,
@@ -97,5 +97,17 @@ class Game(
             PlayerTurn.PLAYER_1 -> PlayerTurn.PLAYER_2
             PlayerTurn.PLAYER_2 -> PlayerTurn.PLAYER_1
         }
+    }
+
+    /**
+     * Starts a new game.
+     * The first player will be the one who should be next on the previous game.
+     */
+    fun newGame() {
+        // update next turn.
+        nextTurn()
+        board = Board()
+        gameFinished = false
+        winnerPlayer = null
     }
 }

@@ -161,4 +161,40 @@ class GameTest {
             PlayerTurn.PLAYER_2 to 0
         ), game.scoreboard)
     }
+
+    @Test
+    fun `When a new game starts the game should be in finished state`() {
+        makeWinningGame()
+        assertTrue(game.isFinished)
+        game.newGame()
+        assertFalse(game.isFinished)
+        makeWinningGame()
+        assertTrue(game.isFinished)
+    }
+
+    @Test
+    fun `When a new game starts the next player should be the one who starts`() {
+        assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
+        makeWinningGame()
+        game.newGame()
+        assertEquals(PlayerTurn.PLAYER_2, game.currentPlayer)
+        makeWinningGame()
+        game.newGame()
+        assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
+    }
+
+    @Test
+    fun `When a new game starts the scores should be preserved`() {
+        makeWinningGame()
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 1,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
+
+        game.newGame()
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 1,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
+    }
 }
