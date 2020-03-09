@@ -15,12 +15,17 @@ class Game(
         PlayerTurn.PLAYER_1 to 0,
         PlayerTurn.PLAYER_2 to 0
     ),
-    private var gameFinished: Boolean = false
+    private var gameFinished: Boolean = false,
+    private var winnerPlayer: PlayerTurn? = null
 ) {
     val currentPlayer: PlayerTurn
         get() = playerTurn
     val scoreboard: Map<PlayerTurn, Int>
         get() = scores.toMap()
+    val isFinished: Boolean
+        get() = gameFinished
+    val winner: PlayerTurn?
+        get() = winnerPlayer
 
     /**
      * Fills the tile at the given location with the value
@@ -59,10 +64,15 @@ class Game(
     }
 
     private fun updateGameStatus() {
-        if (winnerDetected() || noMoreMovesAllowed()) {
-            gameFinished = true
-        } else {
+        val winnerDetected = winnerDetected()
+        gameFinished = winnerDetected || noMoreMovesAllowed()
+        if (winnerDetected) {
+            winnerPlayer = playerTurn
+        }
+        if (!gameFinished) {
             nextTurn()
+        } else {
+            updateScores()
         }
     }
 
@@ -72,6 +82,14 @@ class Game(
 
     private fun noMoreMovesAllowed(): Boolean {
         return board.isFull()
+    }
+
+    private fun updateScores() {
+        if (winnerPlayer != null) {
+            val player: PlayerTurn = winnerPlayer!!
+            // player should always exist in the map.
+            scores[player] = scores[player]!! + 1
+        }
     }
 
     private fun nextTurn() {

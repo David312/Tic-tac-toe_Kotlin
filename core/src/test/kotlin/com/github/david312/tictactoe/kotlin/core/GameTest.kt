@@ -9,6 +9,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class GameTest {
     private lateinit var game: Game
@@ -57,11 +60,11 @@ class GameTest {
 
     @Test
     fun `When a player wins then no more move should be allowed`() {
-        makewinningGame()
+        makeWinningGame()
         assertThrows<GameAlreadyFinishedException> { game.mark(1, 2) }
     }
 
-    private fun makewinningGame() {
+    private fun makeWinningGame() {
         // [X][X][X]
         // [O][O][ ]
         // [ ][ ][ ]
@@ -95,7 +98,7 @@ class GameTest {
 
     @Test
     fun `When a player wins then the next turn should not be updated`() {
-        makewinningGame()
+        makeWinningGame()
         assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
     }
 
@@ -103,5 +106,59 @@ class GameTest {
     fun `When nobody wins then the next turn should not be updated`() {
         makeDrawGame()
         assertEquals(PlayerTurn.PLAYER_1, game.currentPlayer)
+    }
+
+    @Test
+    fun `A game is finished when a winner or a draw is detected`() {
+        assertFalse(game.isFinished)
+
+        makeWinningGame()
+        assertTrue(game.isFinished)
+
+        game = Game()
+        makeDrawGame()
+        assertTrue(game.isFinished)
+    }
+
+    @Test
+    fun `A winner should be returned when there is no draw`() {
+        makeWinningGame()
+        assertEquals(PlayerTurn.PLAYER_1, game.winner)
+    }
+
+    @Test
+    fun `No winner should be returned when there is a draw`() {
+        makeDrawGame()
+        assertNull(game.winner)
+    }
+
+    @Test
+    fun `When a player wins its score should increase`() {
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 0,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
+
+        makeWinningGame()
+
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 1,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
+    }
+
+    @Test
+    fun `When nobody wins the score should be remain intact`() {
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 0,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
+
+        makeDrawGame()
+
+        assertEquals(mapOf(
+            PlayerTurn.PLAYER_1 to 0,
+            PlayerTurn.PLAYER_2 to 0
+        ), game.scoreboard)
     }
 }
